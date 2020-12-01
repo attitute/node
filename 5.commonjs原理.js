@@ -84,3 +84,17 @@ console.log(r)
  * 
 */
 
+// 源码解析
+// require 是一个Module原型上的方法 Module.prototype.require 
+// Module._load 加载方法（模块加载）
+// Module._resolveFilename(解析文件名 变成绝对路径 并且带有后缀)
+// new Module 创建一个模块（id, exports） reuqire方法获取到的是module.exports 属性
+// Module.prototype.load 进行模块加载
+// Module._extensions ,js模块 json模块， 根据不同的后缀名 使用不同的策略去进行模块的加载
+// fs.readFile都去文件内容
+// module._compile 进行内容包裹一个函数
+// const wrapper = [
+//   '(function (exports, require, module, __filename, __dirname)){script}'
+// ]
+// 让函数执行， 用户会给exports赋值
+// 最终获取到的就是module.exports的结果
