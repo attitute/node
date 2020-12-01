@@ -1,0 +1,22 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "1.node中this.js",
+  "bin": {
+    "aa": "./bin/aaa"
+  },
+  "dependencies": {
+    "commander": "^6.2.0"
+  },
+  "peerDependencies": {},
+  "bundledDependencies": {},
+  "devDependencies": {
+    "mime": "^2.4.6"
+  },
+  "scripts": {
+    "test": "mime 1.js"
+  },
+  "author": "sy",
+  "license": "MIT"
+}
