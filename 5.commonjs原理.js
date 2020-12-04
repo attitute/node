@@ -12,7 +12,6 @@
 // 让函数执行， 用户会给exports赋值
 // 最终获取到的就是module.exports的结果
 
-const { dir } = require('console')
 const fs = require('fs')
 const path = require('path')
 const vm = require('vm')
@@ -28,7 +27,7 @@ Module._extensions = {
     let exports = module.exports
     let thisValue = exports
     let dirname = path.dirname(module.id)
-    func.call(thisValue, exports, req, module, module.id, dirname)
+    func.call(thisValue, exports, req, module, module.id, dirname) // 运行导入模块数据函数
   },
   '.json'(){
 
