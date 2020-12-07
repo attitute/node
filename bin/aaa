@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+
+console.log('aaaaaaaa')
+// 上面的是固定写法 使用本地的node环境
