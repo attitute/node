@@ -10,8 +10,7 @@
  * node事件环阶段主要分为以下3个
  * 
  * timer // 宏任务 定时器阶段 存放所有的定时器回调
- * pending callback // 待定的回调，执行延迟到下一个循环迭代的i/o回调（i/o操作太多了超过最大限制 放在这回调）
- * idle，prepare// 系统内部的 不用管
+ * pending callback // 待定的回调，执行延迟到下一个循环迭代的i/o回调（i
  * poll // 宏任务 轮询阶段 主要存放存放异步的i/o操作，node中基本所有的异步api的回调都会在这个阶段处理
  * 
  * check // 检测 setTmmediate的回调
