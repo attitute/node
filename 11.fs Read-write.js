@@ -49,6 +49,7 @@ fs.open(path.resolve(__dirname,'2.txt'),'r', function (err, fd) {
     // 文件描述符 读取到哪个buffer中，从buffer的哪个位置开始写入，写入几个，读取文件的位置是多少
     fs.read(fd,bufffer,0,18,0,function (err,bytesRead) {// bytesRead真实读取到的个数
         fs.open(path.resolve(__dirname,'3.txt'), 'w', function (err,wfd) {
+            // 写入的文件 读取哪个buffer，从buffer的哪个位置开始读取，读取几个，写入到文件中的位置是多少
             fs.write(wfd,bufffer,0,18,0, function (err, written) {
                 fs.close(fd, ()=>{})
                 fs.close(wfd, ()=>{})
