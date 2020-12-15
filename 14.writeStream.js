@@ -27,14 +27,25 @@ const path = require('path')
 
 // 例2： 每写2次就消费 每两次一循环 一直到10次
 
-let ws1 =  fs.createWriteStream(path.resolve(__dirname, '2.txt'), {
+const WriteWriteStream = require('./源码实现/15.WriteStream实现')
+
+
+let ws1 = new WriteWriteStream(path.resolve(__dirname, '2.txt'), {
   flags: 'w',
   encoding: 'utf8',
   mode: 0o666,
   emitClose: true,
   start: 0,
-  highWaterMark: 5
+  highWaterMark: 3
 })
+// let ws1 =  fs.createWriteStream(path.resolve(__dirname, '2.txt'), {
+//   flags: 'w',
+//   encoding: 'utf8',
+//   mode: 0o666,
+//   emitClose: true,
+//   start: 0,
+//   highWaterMark: 5
+// })
 
 let index = 0
 function write() {
@@ -46,7 +57,7 @@ function write() {
     }
   }
   if (index == 10){
-    ws1.end('ok') // 触发 fs.close 和 write
+    // ws1.end('ok') // 触发 fs.close 和 write
     // 触发close之后不会触发drain
   }
 }

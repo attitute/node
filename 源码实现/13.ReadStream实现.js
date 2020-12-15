@@ -25,6 +25,22 @@ class ReadStream extends EventEmitter {
       }
     })
   }
+  // 结合上传流得操作
+  pipe (ws){
+    this.on('data', (chunk)=>{
+      let r = ws.write(chunk)
+      if(!r){
+        this.pause()
+      }
+    })
+    this.on('end',()=>{
+      // ws.end()
+    })
+    ws.on('drain',()=>{
+      this.resume()
+    })
+  }
+
   _read (){
     if (typeof this.fd != 'number'){
       // 第一次获取不到fd 所以给一个open事件 等emit open事件时就删除
@@ -34,6 +50,7 @@ class ReadStream extends EventEmitter {
     let howMouchToRead = this.end? Math.min(this.highWaterMark, this.end - this.offset+1) : this.highWaterMark
     let buffer = Buffer.alloc(howMouchToRead); // 每次读取的个数
     fs.read(this.fd, buffer, 0, howMouchToRead,this.offset,function (err,bytesRead) {
+        console.log('bytesRead',bytesRead)
       if (err)return this.destory(err)
       if (bytesRead > 0) {
         this.emit('data', buffer.slice(0,bytesRead))
@@ -67,7 +84,7 @@ class ReadStream extends EventEmitter {
     }
   }
   open(){
-    fs.open(this.path,this.flags,function (err,fd) {
+    fs.open(this.path,this.flags,(err,fd)=> {
       if (err){
         return this.destory(err)
       }
@@ -76,6 +93,8 @@ class ReadStream extends EventEmitter {
     })
   }
 }
+
+module.exports = ReadStream
 
 
 

@@ -7,6 +7,8 @@
 
 const EventEmitter = require('events')
 const fs = require('fs')
+const Queue = require('./18.queue')
+
 class WriteStream extends EventEmitter {
   constructor(path, options = {}){
     super()
@@ -20,7 +22,7 @@ class WriteStream extends EventEmitter {
 
     this.len = 0 // 写入的个数
     this.needDrain = false // 默认不触发drain
-    this.cache = [] // 写入操作数组
+    this.cache = new Queue() // 写入操作数组
     this.writting = false // 默认不在写入状态
     this.offset = 0 // 写入到文件中的位置
 
@@ -33,9 +35,9 @@ class WriteStream extends EventEmitter {
   }
   clearBuffer(){
     // 清空缓存
-    let data = this.cache.shift() // 每次取第一个缓存
+    let data = this.cache.offer() // 每次取第一个缓存
     if(data){ // 缓存中有内容
-      this._write(data.chunk,data.encoding, data.cb)
+      this._write(data.chunk,data.encoding, data.clearBuffer)
     } else {
       this.writting = false // 没有内容代表不在写入状态了
       if(this.needDrain){ // 需要drain 则触发
@@ -43,7 +45,6 @@ class WriteStream extends EventEmitter {
         this.emit('drain')
       }
     }
-
   }
   // 打开文件
   open (){
@@ -60,7 +61,7 @@ class WriteStream extends EventEmitter {
     chunk = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk) // 格式化chunk
     this.len += chunk.length // 存储写入的长度 字节
     let result = this.len < this.highWaterMark // 比较写入长度与期望值
-    this.needDrain = !this.result // 超过期望着则触发drain
+    this.needDrain = !result // 超过期望着则触发drain
 
     const clearBuffer = ()=>{ // 保存每次写入回调 等待写入操作完毕触发
       this.clearBuffer() // 清空缓存
@@ -68,7 +69,7 @@ class WriteStream extends EventEmitter {
     }
     if (this.writting){ // 如果是写入状态就存入数组 等待执行
       // 将写入的内容缓存起来
-      this.cache.push({
+      this.cache.add({
         chunk,
         encoding,
         clearBuffer
@@ -85,7 +86,7 @@ class WriteStream extends EventEmitter {
       return this.once('open',()=>this._write(chunk,encoding,cb))
     }
     // 写入的文件 写入的内容 从内容中哪个开始写 写入多少 写入到文件中的位置 
-    fs.write(fd, chunk, 0, chunk.length,this.offset, (err , bytesWrite)=>{
+    fs.write(this.fd, chunk, 0, chunk.length,this.offset, (err , bytesWrite)=>{
       this.offset += bytesWrite // 更改偏移量
       this.len -= bytesWrite // 写入个数减实际写入个数
       cb() // 写入完成触发回调
