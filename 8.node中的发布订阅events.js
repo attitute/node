@@ -1,7 +1,7 @@
 
 // events
 // 发布订阅模式 node内置了这个模块
-const EventEmitter = require('./events源码'); // 事件触发器
+const EventEmitter = require('./源码实现/events源码'); // 事件触发器
 
 const util = require('util') // 内置模块 能够继承
 
