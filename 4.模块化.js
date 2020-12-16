@@ -26,7 +26,7 @@ fs.readFileSync('./1.node中this.js','utf-8') // 同步获取
 fs.existsSync('./1.node中this.js') // 同步判断是否存在
 
 
-const path = require('path') // 处理路径\
+const path = require('path') // 处理路径
 
 // resolve多传入的参数会拼接  但是遇到绝对路径/ 就会出现问题直接回到根路径
 path.resolve(__dirname, '1.node中this.js', '2.node中的一些重要模块.js') // 解析出一个绝对路径 默认是以process.cwd()解析
