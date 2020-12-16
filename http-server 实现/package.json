@@ -1,0 +1,16 @@
+{
+  "name": "my-http-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": "./bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hsy",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "link": "^0.1.5"
+  }
+}

@@ -1,0 +1,54 @@
+#! /usr/bin/env node
+
+
+const program = require('commander') // 命令行管家
+const chalk = require('chalk') // 粉笔
+const config = require('./config')
+const Server = require('../src/server.js')
+console.log(Server)
+
+program.name('my-http-server') // 设置文件名
+program.usage('my-http-server') // 设置名字
+
+// 写服务 
+// 1.端口号 2. 能指定目录 3.文件是否需要缓存 等等。。。。
+
+const usageList = []
+
+let defaultConfig = {}
+Object.entries(config).forEach(([key,value])=>{
+    defaultConfig[key] = value.default
+    usageList.push(value.usage)
+    program.option(value.option, value.descriptor) // 配置命令行参数
+})
+
+program.on('--help',function () {
+    console.log('EXamples:')
+    usageList.forEach(line=>{
+        console.log(`  ${chalk.green(line)} \r`)
+    })
+})
+
+
+function mergeOption(defaultConfig,newConfig) {
+    let options = {}
+    for (let key in defaultConfig) {
+        if(!(key in newConfig)){
+            options[key] = defaultConfig[key]
+        }else {
+            // 可检验用户newconfig 是否符合预期
+            options[key] = newConfig[key]
+        }
+    }
+    return options
+}
+
+
+let newConfig = program.parse(process.argv) // 解析用户执行时的参数
+let options = mergeOption(defaultConfig, newConfig)
+
+console.log(options)
+
+
+
+
