@@ -5,7 +5,6 @@ const program = require('commander') // 命令行管家
 const chalk = require('chalk') // 粉笔
 const config = require('./config')
 const Server = require('../src/server.js')
-console.log(Server)
 
 program.name('my-http-server') // 设置文件名
 program.usage('my-http-server') // 设置名字
@@ -47,7 +46,9 @@ function mergeOption(defaultConfig,newConfig) {
 let newConfig = program.parse(process.argv) // 解析用户执行时的参数
 let options = mergeOption(defaultConfig, newConfig)
 
-console.log(options)
+const server = new Server(options)
+server.start()
+// console.log(options)
 
 
 
