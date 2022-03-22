@@ -22,3 +22,9 @@
 - 同步阻塞 异步非阻塞
 
 > node中当完成任务后会以事件的形式通知我
+
+
+
+> node this问题 指向module.exports
+
+
